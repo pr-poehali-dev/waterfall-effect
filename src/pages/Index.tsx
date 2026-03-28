@@ -66,9 +66,15 @@ const Index = () => {
       {/* Hero Section */}
       <section id="hero" className="relative pt-32 pb-32 px-6 min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
-          <img src="https://cdn.poehali.dev/projects/a324d219-5e97-47aa-907d-85b3ae91f0a7/bucket/549794c5-edb7-483f-90b0-6ceb080c4ad1.jpg" alt="" className="w-full h-full object-cover opacity-50" />
+          <div className="mask-3d-wrapper">
+            <img
+              src="https://cdn.poehali.dev/projects/a324d219-5e97-47aa-907d-85b3ae91f0a7/bucket/549794c5-edb7-483f-90b0-6ceb080c4ad1.jpg"
+              alt=""
+              className="mask-3d-img"
+            />
+          </div>
         </div>
-        <div className="absolute inset-0 bg-black/75" />
+        <div className="absolute inset-0 bg-black/70" />
 
         {/* Matrix scanline effect */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5">
