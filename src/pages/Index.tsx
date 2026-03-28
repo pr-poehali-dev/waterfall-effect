@@ -1,63 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const Index = () => {
   const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
-  const [lagActive, setLagActive] = useState(false);
-  const [lagType, setLagType] = useState(0);
-  const lagRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertTimer, setAlertTimer] = useState(10);
-  const [showBSOD, setShowBSOD] = useState(false);
-  const alertIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    const t = setTimeout(() => setShowAlert(true), 5000);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    if (!showAlert) return;
-    setAlertTimer(10);
-    alertIntervalRef.current = setInterval(() => {
-      setAlertTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(alertIntervalRef.current!);
-          setShowAlert(false);
-          setShowBSOD(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => { if (alertIntervalRef.current) clearInterval(alertIntervalRef.current); };
-  }, [showAlert]);
-
-  useEffect(() => {
-    const triggerLag = () => {
-      const type = Math.floor(Math.random() * 4);
-      setLagType(type);
-      setLagActive(true);
-      const duration = 120 + Math.random() * 300;
-      lagRef.current = setTimeout(() => {
-        setLagActive(false);
-        const next = 3000 + Math.random() * 6000;
-        lagRef.current = setTimeout(triggerLag, next);
-      }, duration);
-    };
-    lagRef.current = setTimeout(triggerLag, 2000);
-    return () => { if (lagRef.current) clearTimeout(lagRef.current); };
-  }, []);
-
-  const lagClass = lagActive
-    ? [
-        "lag-shake",
-        "lag-freeze",
-        "lag-skew",
-        "lag-chromatic",
-      ][lagType]
-    : "";
 
   useEffect(() => {
     const observers: Record<string, IntersectionObserver> = {};
@@ -86,7 +32,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-background font-mono ${lagClass}`}>
+    <div className="min-h-screen bg-background font-mono">
 
       {/* BSOD */}
       {showBSOD && (
