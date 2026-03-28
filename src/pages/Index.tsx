@@ -66,7 +66,7 @@ const Index = () => {
       {/* Hero Section */}
       <section id="hero" className="relative pt-32 pb-32 px-6 min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
-          <img src="https://cdn.poehali.dev/projects/a324d219-5e97-47aa-907d-85b3ae91f0a7/files/ed9550ad-4d8a-4110-a70e-d1cbc0c0fe2e.jpg" alt="" className="w-auto h-full object-contain opacity-40" />
+          <img src="https://cdn.poehali.dev/projects/a324d219-5e97-47aa-907d-85b3ae91f0a7/files/2ce63429-7dc5-4cd1-a031-83c0c675a461.jpg" alt="" className="w-auto h-full object-contain opacity-35" />
         </div>
         <div className="absolute inset-0 bg-black/75" />
 
