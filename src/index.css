@@ -246,6 +246,36 @@
     animation: glow 3s ease-in-out infinite;
   }
 
+  /* BSOD progress counter */
+  @property --bsod-n {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+  }
+
+  .bsod-progress {
+    --bsod-n: 0;
+    animation: bsod-count-n 9s linear forwards;
+    counter-reset: bsod var(--bsod-n);
+    font-size: 0 !important;
+  }
+
+  .bsod-progress::after {
+    content: counter(bsod) "% complete";
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  @keyframes bsod-count-n {
+    from {
+      --bsod-n: 0;
+    }
+    to {
+      --bsod-n: 73;
+    }
+  }
+
   /* Fake lag effects */
   .lag-shake {
     animation: lag-shake-anim 0.08s steps(2) infinite;

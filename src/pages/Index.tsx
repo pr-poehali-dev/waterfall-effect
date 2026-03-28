@@ -7,6 +7,33 @@ const Index = () => {
   const [lagType, setLagType] = useState(0);
   const lagRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertTimer, setAlertTimer] = useState(10);
+  const [showBSOD, setShowBSOD] = useState(false);
+  const alertIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowAlert(true), 5000);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!showAlert) return;
+    setAlertTimer(10);
+    alertIntervalRef.current = setInterval(() => {
+      setAlertTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(alertIntervalRef.current!);
+          setShowAlert(false);
+          setShowBSOD(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (alertIntervalRef.current) clearInterval(alertIntervalRef.current); };
+  }, [showAlert]);
+
   useEffect(() => {
     const triggerLag = () => {
       const type = Math.floor(Math.random() * 4);
@@ -60,6 +87,91 @@ const Index = () => {
 
   return (
     <div className={`min-h-screen bg-background font-mono ${lagClass}`}>
+
+      {/* BSOD */}
+      {showBSOD && (
+        <div className="fixed inset-0 z-[9999] bg-[#0000AA] flex flex-col items-center justify-center p-12 font-mono cursor-none">
+          <div className="max-w-2xl w-full text-white space-y-6">
+            <p className="text-2xl">Windows</p>
+            <div className="bg-white text-[#0000AA] px-4 py-1 inline-block text-2xl font-bold mb-4">
+              :(
+            </div>
+            <p className="text-lg leading-relaxed">
+              Your PC ran into a problem and needs to restart. We're just<br />
+              collecting some error info, and then we'll restart for you.
+            </p>
+            <p className="text-5xl font-bold text-white/90 my-6 bsod-progress">0% complete</p>
+            <p className="text-sm text-white/70 leading-loose">
+              For more information about this issue and possible fixes, visit<br />
+              <span className="text-white">https://fsociety.io/bsod</span>
+            </p>
+            <p className="text-sm text-white/70 mt-8">
+              If you call a support person, give them this info:<br />
+              Stop code: <span className="text-white font-bold">FSOCIETY_KERNEL_BREACH</span>
+            </p>
+          </div>
+          <button
+            onClick={() => setShowBSOD(false)}
+            className="absolute bottom-8 right-8 text-white/30 hover:text-white/60 text-xs transition-colors"
+          >
+            [ закрыть ]
+          </button>
+        </div>
+      )}
+
+      {/* Hack Alert Popup */}
+      {showAlert && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="relative bg-black border-2 border-red-500 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl shadow-red-500/40 font-mono">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500/20 to-transparent rounded-2xl blur animate-pulse pointer-events-none" />
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-red-500 text-3xl animate-pulse">⚠</span>
+              <h2 className="text-red-500 font-black text-xl uppercase tracking-widest">Взлом системы</h2>
+            </div>
+            <div className="space-y-3 mb-6 text-sm text-white/80 leading-relaxed">
+              <p>
+                <span className="text-red-400">[CRITICAL]</span> Обнаружено несанкционированное проникновение
+              </p>
+              <p>
+                <span className="text-red-400">[WARN]</span> Ваши данные копируются на удалённый сервер...
+              </p>
+              <p>
+                <span className="text-accent">[INFO]</span> IP-адрес идентифицирован и передан в fsociety
+              </p>
+              <p className="text-white/40 text-xs mt-4">
+                PID: 31337 | MEM: 0x00DEAD00 | SYS: COMPROMISED
+              </p>
+            </div>
+            <div className="border border-red-500/40 rounded-xl p-4 bg-red-500/5 text-center mb-6">
+              <p className="text-red-400 text-sm mb-2">Ваше ПО будет уничтожено через</p>
+              <p className="text-6xl font-black text-red-500 tabular-nums animate-pulse">{alertTimer}</p>
+              <p className="text-red-400 text-sm mt-2">секунд</p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  clearInterval(alertIntervalRef.current!);
+                  setShowAlert(false);
+                  setShowBSOD(true);
+                }}
+                className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-all text-sm"
+              >
+                Уничтожить сейчас
+              </button>
+              <button
+                onClick={() => {
+                  clearInterval(alertIntervalRef.current!);
+                  setShowAlert(false);
+                }}
+                className="flex-1 py-3 border border-white/20 hover:border-white/40 text-white/60 hover:text-white font-bold rounded-xl transition-all text-sm"
+              >
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="fixed top-0 w-full bg-background/90 backdrop-blur-2xl border-b border-accent/20 z-50">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
