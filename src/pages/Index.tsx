@@ -74,7 +74,7 @@ const Index = () => {
             />
           </div>
         </div>
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/40" />
 
         {/* Matrix scanline effect */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5">
