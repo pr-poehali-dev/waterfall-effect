@@ -1,8 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Icon from "@/components/ui/icon";
 
 const Index = () => {
   const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
+  const [lagActive, setLagActive] = useState(false);
+  const [lagType, setLagType] = useState(0);
+  const lagRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const triggerLag = () => {
+      const type = Math.floor(Math.random() * 4);
+      setLagType(type);
+      setLagActive(true);
+      const duration = 120 + Math.random() * 300;
+      lagRef.current = setTimeout(() => {
+        setLagActive(false);
+        const next = 3000 + Math.random() * 6000;
+        lagRef.current = setTimeout(triggerLag, next);
+      }, duration);
+    };
+    lagRef.current = setTimeout(triggerLag, 2000);
+    return () => { if (lagRef.current) clearTimeout(lagRef.current); };
+  }, []);
+
+  const lagClass = lagActive
+    ? [
+        "lag-shake",
+        "lag-freeze",
+        "lag-skew",
+        "lag-chromatic",
+      ][lagType]
+    : "";
 
   useEffect(() => {
     const observers: Record<string, IntersectionObserver> = {};
@@ -31,7 +59,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background font-mono">
+    <div className={`min-h-screen bg-background font-mono ${lagClass}`}>
       {/* Header */}
       <header className="fixed top-0 w-full bg-background/90 backdrop-blur-2xl border-b border-accent/20 z-50">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">

@@ -245,4 +245,75 @@
   .animate-glow {
     animation: glow 3s ease-in-out infinite;
   }
+
+  /* Fake lag effects */
+  .lag-shake {
+    animation: lag-shake-anim 0.08s steps(2) infinite;
+  }
+
+  .lag-freeze {
+    animation: none !important;
+    filter: brightness(1.4) contrast(1.6) saturate(0.3);
+    transition: none !important;
+  }
+
+  .lag-skew {
+    animation: lag-skew-anim 0.1s steps(3) infinite;
+  }
+
+  .lag-chromatic {
+    animation: lag-chromatic-anim 0.06s steps(2) infinite;
+  }
+
+  @keyframes lag-shake-anim {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-6px, 3px) scaleX(1.01);
+    }
+    50% {
+      transform: translate(8px, -2px);
+    }
+    75% {
+      transform: translate(-4px, 5px) scaleX(0.99);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes lag-skew-anim {
+    0% {
+      transform: skewX(0deg);
+      filter: none;
+    }
+    33% {
+      transform: skewX(3deg) translateX(-8px);
+      filter: brightness(1.5);
+    }
+    66% {
+      transform: skewX(-2deg) translateX(6px);
+      filter: brightness(0.7);
+    }
+    100% {
+      transform: skewX(0deg);
+      filter: none;
+    }
+  }
+
+  @keyframes lag-chromatic-anim {
+    0% {
+      filter: none;
+    }
+    50% {
+      filter: drop-shadow(-6px 0 0 rgba(255, 0, 0, 0.7))
+        drop-shadow(6px 0 0 rgba(0, 255, 255, 0.7)) brightness(1.3);
+      transform: translateX(4px);
+    }
+    100% {
+      filter: none;
+      transform: translateX(0);
+    }
+  }
 }
